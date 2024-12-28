@@ -1,8 +1,0 @@
-#+TITLE: "Implementing GTD in Org-roam"
-#+DATE: 2024-12-27
-#+DRAFT: nil
-#+CATEGORIES[]: test
-#+TAGS[]: testtag
-#+DESCRIPTION: Short description
-
-This is a test blog post. What the fuck is this shit.

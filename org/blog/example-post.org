@@ -29,3 +29,6 @@ GTD, if you're not familiar with it, can be summarized very quickly, although th
        4. *Engage* with your tasks: do them!
 
 ** The implementation
+
+*** the Capture step
+The first step in a GTD system is the Capture step, and I needed a way to capture tasks into an inbox.

@@ -1,3 +1,4 @@
 #+TITLE: Sitemap for project pages
 
 - [[file:index.org][index]]
+- [[file:blog/index.org][blog posts]]

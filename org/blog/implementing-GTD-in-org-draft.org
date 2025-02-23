@@ -14,19 +14,19 @@ I looked next at a bunch of blogs that talked about implementing GTD in Org, and
 
 GTD, if you're not familiar with it, can be summarized very quickly, although the ins and outs take some explaining.
 
-1. Every task that is taking up space in your head is what you should *Capture* in an inbox.
-2. The inbox should be processsed in the following way:
+1. _Every single task_ that is taking up space in your head should be *Captured* in an inbox.
+2. The inbox(es) should be processsed in the following way:
        1. *Clarify* the task: what is it? Literally, what is it? Tasks should ideally be defined in a verb-fronted way: "Buy some milk", "Learn Japanese"
        2. *Organize* the task:
               1. If the task isn't really a task or isn't actionable, *delete* it.
               2. If the task would take less than 2 minutes, *do* it NOW, while processing the inbox.
-              3. If the task would make more sense for someone else to do, *delegate* it to that person, but put it on a Waiting For list where you can keep track of the fact that you're waiting for them to do it.
-              4. If the task is a single task (e.g., "Buy some milk"), put it on a *Next* *Actions* list.
-              5. If the task is a project (read: anything that takes more than one step to complete but could reasonably be completed in about a year), identify what the subtasks are to the project, and then move that project to a *Projects* list.
+              3. If the task would make more sense for someone else to do, *delegate* it to that person, but also put it on a *Waiting For* list where you can keep track of the fact that you're waiting for someone else to do it.
+              4. If the task is a single task (e.g., "Buy some milk") that you plan to do in the next 1-2 months, put it on a *Next* *Actions* list.
+              5. If the task is a project (read: anything that takes more than one step to complete but could reasonably be completed in about a year), identify what the subtasks are to the project, and then move that project to a *Projects* list. The first step of any active project belongs on your Next Actions list, unless it is Waiting For something instead; once that step is complete, you then move the next step of your project to Next Actions, and so on until the entire project is complete.
               6. If the task is a recurring item, e.g., every Sunday you "Do the laundry", OR if the task is something you have to wait for a specific date to do, e.g., your taxes can't be started until after Jan 31st, then put that task in a *Tickler* file.
-              7. If the task is something you're not sure about -- something you'd like to do but you don't know when ("learn blacksmithing") -- put it on a *Someday* list.
-       3. *Reflect* on your tasks -- that is, process your inbox twice a day (in the morning and in the evening), and look over all your lists (except possibly Someday) at least once a week. Look at your Someday list at least once a month. Make any adjustments to tasks as needed.
-       4. *Engage* with your tasks: do them!
+              7. If the task is something you're not sure about -- something you'd like to do but you don't know exactly when ("learn blacksmithing") -- put it on a *Someday* list.
+       3. *Reflect* on your tasks -- that is, process your inbox(es) at least twice a day (in the morning and in the evening), and look over all your lists (except possibly your Someday list) at least once a week. Look at your Someday list at least once a month. Make any adjustments to tasks as needed -- moving something off of "Someday" to "Next Actions", adding steps to a project, marking things cancelled, moving things off of your Waiting For list, etc.
+       4. *Engage* with your tasks: do your Next Actions!
 
 ** The implementation
 

@@ -2,9 +2,19 @@
 * An implementation of GTD using Org-mode
 
 ** Background
-I have ADHD, and I have a lot of trouble keeping track of and prioritizing my tasks. I've tried a lot of different organizational systems over the years, to varying degrees of success. Most recently, I read the *second edition* of _Getting Things Done_ by David Allen and was very impressed with what was on offer. (I had read the first edition some years prior and been unimpressed; the earlier edition is aimed squarely at CEO types and is somewhat confusingly written. The second edition remedies these problems.) So, I decided to try to implement GTD in my own life and see if it made a difference.
+I have ADHD, and consequently I have a lot of trouble keeping track of and prioritizing my tasks. I've tried a lot of different organizational systems over the years, to varying degrees of success. Most recently (in November 2024) I read the *second edition* of _Getting Things Done_ by David Allen and was very impressed.[fn:1] The first sentence of the first chapter makes a startlingly big-if-true claim:
 
-But, increasingly, I live out of Emacs, and specifically Org-mode, so I needed an implementation of GTD in Org if I was going to have any hope of keeping up with it.[fn:1] (Minimize inboxes, Allen says, and I agree; if most of my life is in Org, that's where my organizational system should live, too.)
+#+begin_quote
+It's possible for a person to have an overwhelming number of things to do and still function productively with a clear head and a positive sense of relaxed control.
+#+end_quote
+
+I am, in fact, a person with an overwhelming number of things to do, and I would /love/ to function productively with a clear head and a positive sense of relaxed control. Okay, you got me, says I to myself; I'll bite.
+
+The basic idea behind the system is to get all of your tasks *out of your brain* -- which is unreliable at best, and when it does remember things, tends to remind you that you need to get your oil changed while you're lying in bed at 2am, completely helpless and totally unable to get your oil changed, and then follow that up by suggesting that you are a bad person because you haven't learned blacksmithing or how to get out of Vim yet -- and *into a system you trust*, which will only show you the tasks you /actually/ need to be doing, /given the context you're actually in at the moment/.
+
+Figuring out what I actually need to be doing at a given time, as I previously mentioned, is not my strong suit. So, I decided to try to implement GTD in my own life and see if it made a difference.[fn:3]
+
+But, increasingly, I live out of Emacs, and specifically Org-mode, so I needed an implementation of GTD in Org if I was going to have any hope of keeping up with it.[fn:2] (Minimize inboxes, Allen says, and I agree; if most of my life is in Org, that's where my organizational system should live, too.)
 
 I first tried Org-gtd, an existing package that aims to do exactly that. It has a lot of neat features that I haven't even got close to mimicking yet. But, it had a few crucial flaws. Most seriously, it doesn't actually follow the [[https://github.com/Trevoke/org-gtd.el][Org-gtd]] workflow, in that it doesn't contain a distinction between things that should be filed as "Someday" and things that should be filed in the "Tickler" (terms to be discussed later, if you're not familiar); all tasks that are not put into "Projects" or "Next Actions" have to be scheduled. Moreover, the owner of the package has been aware of this problem for some time and does not seem particularly interested in fixing it; I think they are happy with how it works for them. And fair enough. But I wanted something closer to GTD proper.
 
@@ -37,4 +47,8 @@ The first step in a GTD system is the Capture step, so I needed a way to capture
 
 * Footnotes
 
-[fn:1] I only started using Emacs in July 2024, but it's completely taken over my life, courtesy of [[https://babbagefiles.xyz/][this really hot guy with a Lisp]].
+[fn:3] It did.
+
+[fn:1]  I had read the first edition some years prior and been unimpressed; the earlier edition is aimed squarely at CEO types and is somewhat confusingly written. The second edition remedies these problems.
+
+[fn:2] I only started using Emacs in July 2024, but it's completely taken over my life, courtesy of [[https://babbagefiles.xyz/][this really hot guy with a Lisp]].

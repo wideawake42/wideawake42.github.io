@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2025-02-23 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="author" content="EJ Rogers" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="/style.css" type="text/css"/>
+<link rel="stylesheet" media="(prefers-color-scheme: light)" href="/modus-operandi.css" type="text/css"/>
+<link rel="stylesheet" media="(prefers-color-scheme: dark)" href="/modus-vivendi.css" type="text/css"/>
+</head>
+<body>
+<div id="org-div-home-and-up"><a href="https://effusing.org/blog">Blog</a> <a href="https://effusing.org/">Home</a> </div><div id="preamble" class="status">
+<div id="updated">Updated: 2025-02-23</div>
+</div>
+<div id="content" class="content">
+<div id="outline-container-org9b47d49" class="outline-2">
+<h2 id="org9b47d49">An implementation of GTD using Org-mode</h2>
+<div class="outline-text-2" id="text-org9b47d49">
+</div>
+<div id="outline-container-org9512842" class="outline-3">
+<h3 id="org9512842">Introduction</h3>
+<div class="outline-text-3" id="text-org9512842">
+<p>
+I have ADHD, and consequently I have a lot of trouble keeping track of and prioritizing my tasks. I've tried a lot of different organizational systems over the years, to varying degrees of success. Most recently (in November 2024) I read the <b>second edition</b> of <span class="underline">Getting Things Done</span> by David Allen and was very impressed.<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> The first sentence of the first chapter makes a startlingly big-if-true claim:
+</p>
+
+<blockquote>
+<p>
+It's possible for a person to have an overwhelming number of things to do and still function productively with a clear head and a positive sense of relaxed control.
+</p>
+</blockquote>
+
+<p>
+I am, in fact, a person with an overwhelming number of things to do, and I would <i>love</i> to function productively with a clear head and a positive sense of relaxed control. Okay, you got me, says I to myself; I'll bite.
+</p>
+
+<p>
+The basic idea behind the system is to get all of your tasks <b>out of your brain</b> &#x2013; which is unreliable at best, and when it does remember things, tends to remind you that you need to get your oil changed while you're lying in bed at 2am, completely helpless and totally unable to get your oil changed, and then follow that up by suggesting that you are a bad person because you haven't learned blacksmithing or how to get out of Vim yet &#x2013; and <b>into a system you trust</b>, which will only show you the tasks you <i>actually</i> need to be doing, <i>given the context you're actually in at the moment</i>.
+</p>
+
+<p>
+Figuring out what I actually need to be doing at a given time, as I previously mentioned, is not my strong suit. So, I decided to try to implement GTD in my own life and see if it made a difference.<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>
+</p>
+
+<p>
+But, increasingly, I live out of Emacs, and specifically Org-mode, so I needed an implementation of GTD in Org if I was going to have any hope of keeping up with it.<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> (Minimize inboxes, the author of GTD says, and I agree; if most of my life is in Org, that's where my organizational system should live, too.)
+</p>
+
+<p>
+I first tried <a href="https://github.com/Trevoke/org-gtd.el">Org-gtd</a> , an existing package that aims to do exactly that. It has a lot of neat features (some of which I haven't gotten close to mimicking yet). But, it has a few crucial flaws. Most seriously, it doesn't actually follow the official GTD workflow, in that it doesn't contain a distinction between things that should be filed as "Someday" and things that should be filed in the "Tickler" (terms to be discussed later, if you're not familiar); all tasks that are not put into "Projects" or "Next Actions" have to be scheduled. This clutters the hell out of your agenda, in addition to being confusing if you're not actually sure when you want to do something. Moreover, the owner of the package has been aware of this problem for some time and does not seem particularly interested in fixing it; I think they are happy with how it works for them. And fair enough. One should not get too caught up on toolsets being just so; one should use whatever, well, gets things done. But precisely because I am new to the tool, I wanted something closer to GTD proper.
+</p>
+
+<p>
+I looked next at a bunch of blogs that talked about implementing GTD in Org, and those had a heavy influence on what I ended up with, but none of them quite fit what I wanted by themselves. There were two that I especially spent a lot of time with: first,  <a href="https://github.com/rougier/emacs-gtd">GitHub - rougier/emacs-gtd: Get Things Done with Emacs</a> had a lot of useful info, but again didn't quite follow GTD as strictly as I wanted (their agenda shows all open TODOs, and they keep recurring meetings, events, etc. in separate files rather than having one Tickler). Second, <a href="https://desmondrivet.com/2023/12/05/gtd-org-mode">Implementing GTD in Emacs With Org Mode - Desmond Rivet</a> gave me some things I needed about agenda sorting strategies, but kept all projects, next actions, ticklers, etc. in one file, and required a lot of manual assigning of properties, etc. That was too much &#x2013; I didn't want to make a system that was going to require so much manual input that I would abandon it. (I have literally hundreds of tasks in my system at any particular time.)
+</p>
+
+<p>
+In the end, I came up with my own implementation &#x2013; albeit leaning on the shoulders of the aforementioned &#x2013; which I am rather pleased with, which has made a significant difference to my life, and which I think captures GTD fairly faithfully, while relying (almost) solely on built-in features of Org. And while I've never been very good at propagating my own work, that is a fact about myself which I'm actively trying to change. Ergo, I present to you: An Implementation of GTD in Org-Mode.
+</p>
+</div>
+</div>
+<div id="outline-container-orgbf6aacc" class="outline-3">
+<h3 id="orgbf6aacc">The System I Wanted to Implement, or, WTF is GTD?</h3>
+<div class="outline-text-3" id="text-orgbf6aacc">
+<p>
+GTD, if you're not familiar with it, consists of five steps which can be summarized very quickly (although the ins and outs may take some explaining later on):
+</p>
+
+<ol class="org-ol">
+<li><span class="underline">Every single task</span> that is taking up space in your head should be <b>Captured</b> in an inbox.</li>
+<li>The inbox(es) should be processsed in the following way:
+A. <b>Clarify</b> the task: what is it? Literally, what is it? Tasks should ideally be defined in a verb-fronted way: "Buy some milk", "Learn Japanese"
+B. <b>Organize</b> the task:
+<ol class="org-ol">
+<li>If the task isn't really a task or isn't actionable, <b>delete</b> it.</li>
+<li>If the task would take less than 2 minutes, <b>do</b> it NOW, while processing the inbox.</li>
+<li>If the task would make more sense for someone else to do, <b>delegate</b> it to that person, but also put it on a <b>Waiting For</b> list where you can keep track of the fact that you're waiting for someone else to do it.</li>
+<li>If the task is a single task (e.g., "Buy some milk") that you plan to do in the next 1-2 months, put it on a <b>Next</b> <b>Actions</b> list.</li>
+<li>If the task is a project (read: anything that takes more than one step to complete but could reasonably be completed in about a year), identify what the subtasks are to the project, and then move that project to a <b>Projects</b> list. The first step of any active project belongs on your Next Actions list, unless it is Waiting For something instead; once that step is complete, you then move the next step of your project to Next Actions, and so on until the entire project is complete.</li>
+<li>If the task is a recurring item, e.g., every Sunday you "Do the laundry", OR if the task is something you have to wait for a specific date to do, e.g., your taxes can't be started until after Jan 31st, then put that task in a <b>Tickler</b> file.</li>
+<li>If the task is something you're not sure about &#x2013; something you'd like to do but you don't know exactly when ("learn blacksmithing") &#x2013; put it on a <b>Someday</b> list.</li>
+</ol></li>
+<li><b>Reflect</b> on your tasks &#x2013; that is, process your inbox(es) at least twice a day (in the morning and in the evening), and look over all your lists (except possibly your Someday list) at least once a week. Look at your Someday list at least once a month. Make any adjustments to tasks as needed &#x2013; moving something off of "Someday" to "Next Actions", adding steps to a project, marking things cancelled, moving things off of your Waiting For list, etc.</li>
+<li><b>Engage</b> with your tasks: do your Next Actions!</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orga98d655" class="outline-3">
+<h3 id="orga98d655">The Implementation, or, How to Get Things Done in Emacs</h3>
+<div class="outline-text-3" id="text-orga98d655">
+<p>
+What follows is a walkthrough of the implementation of the system and my rationale for the way I've done things. This means that some things will be presented out of order from how they should be arranged in your init file. In the next section, I'll give the code for the implementation.
+</p>
+</div>
+<div id="outline-container-org546a9be" class="outline-4">
+<h4 id="org546a9be">The Capture step</h4>
+<div class="outline-text-4" id="text-org546a9be">
+<p>
+The first step in a GTD system is the Capture step, so I needed a way to capture tasks into an inbox.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf68d264" class="outline-3">
+<h3 id="orgf68d264">The code</h3>
+<div class="outline-text-3" id="text-orgf68d264">
+<p>
+To be written&#x2026;Actually, probably just link to a .el file that you upload to Git.
+</p>
+</div>
+</div>
+<div id="outline-container-org12a7209" class="outline-3">
+<h3 id="org12a7209">What about things that don't live in Emacs?</h3>
+<div class="outline-text-3" id="text-org12a7209">
+<p>
+To be written&#x2026;
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I had read the first edition some years prior and been unimpressed; the earlier edition is aimed squarely at CEO types and is somewhat confusingly written. The second edition remedies these problems.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+It did.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I only started using Emacs in July 2024, but it's completely taken over my life, courtesy of <a href="https://babbagefiles.xyz/">this really hot guy with a Lisp</a>.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="comments">
+<h2>Comments:</h2>
+<div id="text-comments">
+<p>Email questions, comments, and corrections to <a href="mailto:ej@effusing.org">ej@effusing.org</a>.</p>
+<p>Submissions may appear publicly on this website, unless requested otherwise in your email.</p>
+</div>
+</div><hr/>
+<footer>
+<div class="copyright-container">
+<div class="copyright">
+Copyright &copy; 2024 E. J. Rogers. All rights reserved unless noted otherwise.</div></div>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org">Org</a> mode 9.7.22) on <a href="https://www.gnu.org">GNU</a>/<a href="https://www.kernel.org/">Linux</a>
+</div>
+</footer>
+</div>
+</body>
+</html>

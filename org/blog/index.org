@@ -1,4 +1,4 @@
 #+TITLE: Blog Posts
 
+- {{{timestamp(2024-12-29)}}} [[file:example-post.org][example-post]]
 - {{{timestamp(2024-12-28)}}} [[file:sitemap.org][Blog posts]]
-- {{{timestamp(2024-12-28)}}} [[file:example-post.org][example-post]]

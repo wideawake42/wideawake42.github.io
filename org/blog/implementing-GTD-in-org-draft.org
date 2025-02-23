@@ -48,7 +48,7 @@ What follows is a walkthrough of the implementation of the system and my rationa
 The first step in a GTD system is the Capture step, so I needed a way to capture tasks into an inbox.
 
 ** The code
-To be written...Actually, probably just link to a file that you upload to Git.
+To be written...Actually, probably just link to a .el file that you upload to Git.
 
 ** What about things that don't live in Emacs?
 To be written...

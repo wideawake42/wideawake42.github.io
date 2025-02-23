@@ -1,3 +1,2 @@
 #+TITLE: Blog Posts
 
-- {{{timestamp(2024-12-29)}}} [[file:example-post.org][example-post]]

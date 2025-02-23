@@ -1,0 +1,36 @@
+
+* An implementation of GTD using Org-mode
+
+** Background
+I have ADHD, and I have a lot of trouble keeping track of and prioritizing my tasks. I've tried a lot of different organizational systems over the years, to varying degrees of success. Most recently, I read the *second edition* of _Getting Things Done_ by David Allen and was very impressed with what was on offer. (I had read the first edition some years prior and been unimpressed; the earlier edition is aimed squarely at CEO types and is somewhat confusingly written. The second edition remedies these problems.) So, I decided to try to implement GTD in my own life and see if it made a difference.
+
+But, increasingly, I live out of Emacs, and specifically Org-roam, so I needed an implementation of GTD in Org if I was going to have any hope of keeping up with it. (Minimize inboxes, Allen says, and I agree; if most of my life is in Org, that's where my system should live, too.)
+
+I first tried Org-gtd, an existing package that aims to do exactly that. It has a lot of neat features that I haven't even got close to mimicking yet. But, it had a few crucial flaws. Most seriously, it doesn't actually follow the [[https://github.com/Trevoke/org-gtd.el][Org-gtd]] workflow, in that it doesn't contain a distinction between things that should be filed as "Someday" and things that should be filed in the "Tickler" (terms to be discussed later, if you're not familiar); all tasks that are not put into "Projects" or "Next Actions" have to be scheduled. Moreover, the owner of the package has been aware of this problem for some time and does not seem particularly interested in fixing it; I think they are happy with how it works for them. And fair enough. But I wanted something closer to GTD proper.
+
+I looked next at a bunch of blogs that talked about implementing GTD in Org, and those had a heavy influence on what I ended up with, but none of them quite fit what I wanted. There were two that I especially spent a lot of time with:  [[https://github.com/rougier/emacs-gtd][GitHub - rougier/emacs-gtd: Get Things Done with Emacs]] had a lot of useful info, but again didn't quite follow GTD as strictly as I wanted (their agenda shows them open TODOs, and they keep recurring meetings, events, etc. in separate files rather than having one Tickler. [[https://desmondrivet.com/2023/12/05/gtd-org-mode][Implementing GTD in Emacs With Org Mode - Desmond Rivet]] gave me some things I needed about agenda sorting strategies but kept all projects, next actions, ticklers, etc. in one file, and required a lot of manual assigning of properties, etc. I didn't want to make a system that was going to require so much manual input that I would abandon it. (I have literally hundreds of tasks going at any particular time.)
+
+** The system I wanted to implement
+
+GTD, if you're not familiar with it, can be summarized very quickly, although the ins and outs take some explaining.
+
+1. Every task that is taking up space in your head is what you should *Capture* in an inbox.
+2. The inbox should be processsed in the following way:
+       1. *Clarify* the task: what is it? Literally, what is it? Tasks should ideally be defined in a verb-fronted way: "Buy some milk", "Learn Japanese"
+       2. *Organize* the task:
+              1. If the task isn't really a task or isn't actionable, *delete* it.
+              2. If the task would take less than 2 minutes, *do* it NOW, while processing the inbox.
+              3. If the task would make more sense for someone else to do, *delegate* it to that person, but put it on a Waiting For list where you can keep track of the fact that you're waiting for them to do it.
+              4. If the task is a single task (e.g., "Buy some milk"), put it on a *Next* *Actions* list.
+              5. If the task is a project (read: anything that takes more than one step to complete but could reasonably be completed in about a year), identify what the subtasks are to the project, and then move that project to a *Projects* list.
+              6. If the task is a recurring item, e.g., every Sunday you "Do the laundry", OR if the task is something you have to wait for a specific date to do, e.g., your taxes can't be started until after Jan 31st, then put that task in a *Tickler* file.
+              7. If the task is something you're not sure about -- something you'd like to do but you don't know when ("learn blacksmithing") -- put it on a *Someday* list.
+       3. *Reflect* on your tasks -- that is, process your inbox twice a day (in the morning and in the evening), and look over all your lists (except possibly Someday) at least once a week. Look at your Someday list at least once a month. Make any adjustments to tasks as needed.
+       4. *Engage* with your tasks: do them!
+
+** The implementation
+
+What follows is a walkthrough of the implementation of the system and my rationale for the way I've done things. This means that some things will be presented out of order from how they should be arranged in your init file. In the next section, I'll give the code for the implementation.
+
+*** the Capture step
+The first step in a GTD system is the Capture step, and I needed a way to capture tasks into an inbox.

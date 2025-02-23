@@ -1,3 +1,0 @@
-#+TITLE: Blog posts
-
-- [[file:example-post.org][example-post]]
